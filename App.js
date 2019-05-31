@@ -7,7 +7,6 @@
  */
 
 import React, { Component } from 'react';
-// import { SearchBar } from 'react-native-elements';
 import {
   SafeAreaView, StyleSheet, FlatList, TouchableOpacity, Text, ActivityIndicator,
   RefreshControl, View
@@ -16,7 +15,7 @@ import Home from "./Componentz/Home"
 import Header from "./Componentz/Header"
 import Card from "./Componentz/Card"
 import SearchBar from "./Componentz/SearchBar"
-// import apiFetchRequest from "./Componentz/FetchRequest"
+import { apiFetchRequest } from "./Componentz/FetchRequest"
 
 
 // const instructions = Platform.select({
@@ -45,58 +44,43 @@ export default class App extends Component {
 
   }
 
-  // update=(data)=>this.setState({
-  // dataSource:data
-  // })
+
 
   componentDidMount() {
-    this.pageination(this.state.initialURL)
-    // call= () => apiFetchRequest(this.pageination,"https://swapi.co/api/people/?page=1")
+    this.fetchAndHandleManager(this.state.initialURL)
   }
 
-  pageination(url) {
+  fetchAndHandleManager(url) {
     if (!this.state.isOnNextCall) {
-      // console.warn('isonnexcall  called')
-
       this.setState({
         isOnNextCall: true
       })
     } else {
       return
     }
-    // console.warn('initial url' + url)
-    // console.warn('initial next url' + this.state.nextUrl)
-
-    fetch(input = url)
-      .then((Response) => Response.json())
-      .then((responseJson) =>
-        this.setState(
-          {
+    apiFetchRequest(url)
+      .then((responseJson) => {
+        if (responseJson !== 'error') {
+          this.setState(
+            {
+              isloading: false,
+              nextUrl: responseJson.next,
+              isOnNextCall: false,
+              refreshingIndicator: false,
+              dataSource: this.state.pageNumber !== 0 ? [...this.state.dataSource, ...responseJson.results] : responseJson.results,
+              pageNumber: this.state.pageNumber + 1
+            })
+        } else {
+          this.setState({
             isloading: false,
-            nextUrl: responseJson.next,
             isOnNextCall: false,
             refreshingIndicator: false,
-            dataSource: this.state.pageNumber !== 0 ? [...this.state.dataSource, ...responseJson.results] : responseJson.results,
-            pageNumber: this.state.pageNumber + 1
           })
+        }
+      }
       )
-      .catch((error) => this.setState({
-        isOnNextCall: false,
-        // isloading: false,
-        refreshingIndicator: false,
-      }))
-
   }
 
-  // pageination(data) {
-  //   this.setState(
-  //     {
-  //       isloading: false,
-  //       nextUrl: responseJson.next === null ? nextUrl : responseJson.next,
-  //       dataSource: [...this.state.dataSource, ...responseJson.results],
-  //     }
-  //   )
-  // }
 
   renderItem = (data) => <Card name={data.item.name}
     gender={data.item.gender}
@@ -105,13 +89,13 @@ export default class App extends Component {
 
   refreshList() {
     if (!this.state.isSearchRequest) {
-      console.warn('refresh list called')
+      // console.warn('refresh list called')
       this.setState({
         isOnNextCall: true,
         refreshingIndicator: true,
         pageNumber: 0,
       })
-      this.pageination("https://swapi.co/api/people/?page=1")
+      this.fetchAndHandleManager(this.state.initialURL)
     }
   }
 
@@ -137,7 +121,7 @@ export default class App extends Component {
         isOnNextCall: false,
         isSearchRequest: true,
       })
-      this.pageination(this.state.serachURL + text)
+      this.fetchAndHandleManager(this.state.serachURL + text)
     } else {
       this.setState({
         dataSource: [],
@@ -145,14 +129,12 @@ export default class App extends Component {
         pageNumber: 0,
         isOnNextCall: false,
       })
-      this.pageination(this.state.initialURL)
+      this.fetchAndHandleManager(this.state.initialURL)
     }
   }
 
   render() {
-
     if (this.state.isloading) {
-
       return (
         <SafeAreaView style={style.safe}>
           <Header />
@@ -170,7 +152,7 @@ export default class App extends Component {
         <FlatList
           data={this.state.dataSource}
           renderItem={this.renderItem}
-          onEndReached={() => this.state.nextUrl !== null ? this.pageination(this.state.nextUrl) : null}
+          onEndReached={() => this.state.nextUrl !== null ? this.fetchAndHandleManager(this.state.nextUrl) : null}
           onEndReachedThreshold={0.5}
           keyExtractor={(item) => item.name + item.mass}
           refreshControl={<RefreshControl

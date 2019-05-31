@@ -22,16 +22,16 @@ export default class Card extends Component {
 
 const style = StyleSheet.create({
     touch: {
-        flex:1,
+        flex: 1,
         backgroundColor: 'white',
-        padding:5,
+        padding: 5,
         shadowColor: 'grey',
-        shadowOffset: { width: -1, height:1 },
+        shadowOffset: { width: -1, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 2,
         elevation: 3,
-        marginTop:3,
-        marginLeft:3
+        marginTop: 3,
+        marginLeft: 3
     },
     height: {
         // justifyContent:'flex-end',
@@ -42,14 +42,14 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 20,
-       
+
     },
     seprator: {
         backgroundColor: 'grey',
         height: 1,
         marginTop: 20,
-        marginLeft:10,
-        marginRight:5
+        marginLeft: 10,
+        marginRight: 5
     }
 
 })
