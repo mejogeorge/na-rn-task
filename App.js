@@ -78,7 +78,7 @@ export default class App extends Component {
             refreshingIndicator: false,
             dataSource: this.state.pageNumber !== 0 ? [...this.state.dataSource, ...responseJson.results] : responseJson.results,
             pageNumber: this.state.pageNumber + 1
-          })
+          }, ()=>console.warn('response',responseJson.results))
       )
       .catch((error) => this.setState({
         isOnNextCall: false,
@@ -128,16 +128,18 @@ export default class App extends Component {
     }
   }
 
-serachRequest(){
-  text='tu'
+serachRequest = (text) => {
+  console.warn('on change called',text)
   if(text) {
     this.setState({
+      dataSource:[],
       isOnNextCall:false,
       isSerachRequest:true,
     })
     this.pageination(this.state.serachURL+text)
   } else{
     this.setState({
+      dataSource:[],
       isSerachRequest:false,
       pageNumber:0,
       isOnNextCall:false,

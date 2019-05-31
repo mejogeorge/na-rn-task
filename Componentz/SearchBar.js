@@ -1,12 +1,21 @@
 import React,{Component} from "react";
 import {TextInput,StyleSheet} from "react-native";
 import { placeholder } from "@babel/types";
+let timer=null
 
 export default class SerachBar extends Component {
+
+onChange= (text)=>{
+    clearTimeout(timer)
+    timer = setTimeout(()=>{
+        this.props.serachRequester(text)
+    },1000)
+}
+
     render(){
         return(
             <TextInput style={style.bar}
-            onChangeText={(text)=>this.props.searchRequester()}
+            onChangeText={this.onChange}
             placeholder='serach'/>
         )
     }
