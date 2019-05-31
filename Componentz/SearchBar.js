@@ -8,7 +8,7 @@ export default class SerachBar extends Component {
 onChange= (text)=>{
     clearTimeout(timer)
     timer = setTimeout(()=>{
-        this.props.serachRequester(text)
+        this.props.searchRequester(text)
     },1000)
 }
 

@@ -40,7 +40,7 @@ export default class App extends Component {
       nextUrl: '',
       initialURL: "https://swapi.co/api/people/?page=1",
       serachURL: 'https://swapi.co/api/people/?search=',
-      isSerachRequest: false,
+      isSearchRequest: false,
     }
 
   }
@@ -104,7 +104,7 @@ export default class App extends Component {
 
 
   refreshList() {
-    if (!this.state.isSerachRequest) {
+    if (!this.state.isSearchRequest) {
       console.warn('refresh list called')
       this.setState({
         isOnNextCall: true,
@@ -129,29 +129,28 @@ export default class App extends Component {
     }
   }
 
-  serachRequest = (text) => {
-    console.warn('on change called', text)
+  searchRequest = (text) => {
+
     if (text) {
       this.setState({
         dataSource: [],
         isOnNextCall: false,
-        isSerachRequest: true,
+        isSearchRequest: true,
       })
       this.pageination(this.state.serachURL + text)
     } else {
       this.setState({
         dataSource: [],
-        isSerachRequest: false,
+        isSearchRequest: false,
         pageNumber: 0,
         isOnNextCall: false,
       })
       this.pageination(this.state.initialURL)
     }
-
   }
 
   render() {
-    // console.warn('count'+this.state.dataSource.length+','+this.state.nextUrl)
+
     if (this.state.isloading) {
 
       return (
@@ -161,11 +160,11 @@ export default class App extends Component {
         </SafeAreaView>
       )
     }
-    const x = 'sdfds'
+
     return (
       <SafeAreaView style={style.safe}>
         <Header>
-          <SearchBar serachRequester={this.serachRequest} />
+          <SearchBar searchRequester={this.searchRequest} />
         </Header>
 
         <FlatList
