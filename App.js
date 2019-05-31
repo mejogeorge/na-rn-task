@@ -38,9 +38,9 @@ export default class App extends Component {
       refreshingIndicator: false,
       dataSource: [],
       nextUrl: '',
-      initialURL:"https://swapi.co/api/people/?page=1",
-      serachURL:'https://swapi.co/api/people/?search=',
-      isSerachRequest:false,
+      initialURL: "https://swapi.co/api/people/?page=1",
+      serachURL: 'https://swapi.co/api/people/?search=',
+      isSerachRequest: false,
     }
 
   }
@@ -78,12 +78,12 @@ export default class App extends Component {
             refreshingIndicator: false,
             dataSource: this.state.pageNumber !== 0 ? [...this.state.dataSource, ...responseJson.results] : responseJson.results,
             pageNumber: this.state.pageNumber + 1
-          }, ()=>console.warn('response',responseJson.results))
+          })
       )
       .catch((error) => this.setState({
         isOnNextCall: false,
         // isloading: false,
-        refreshingIndicator:false,
+        refreshingIndicator: false,
       }))
 
   }
@@ -104,14 +104,15 @@ export default class App extends Component {
 
 
   refreshList() {
-
-    console.warn('refresh list called')
-    this.setState({
-      isOnNextCall:true,
-      refreshingIndicator: true,
-      pageNumber: 0,
-    })
-    this.pageination("https://swapi.co/api/people/?page=1")
+    if (!this.state.isSerachRequest) {
+      console.warn('refresh list called')
+      this.setState({
+        isOnNextCall: true,
+        refreshingIndicator: true,
+        pageNumber: 0,
+      })
+      this.pageination("https://swapi.co/api/people/?page=1")
+    }
   }
 
 
@@ -119,7 +120,7 @@ export default class App extends Component {
     // console.warn('footer func called')
     if (this.state.isOnNextCall) {
       return (
-        <View style={[flex = 1, paddingVertical = 20,style.activity,height=40]}>
+        <View style={[flex = 1, paddingVertical = 20, style.activity, height = 40]}>
           <ActivityIndicator style={style.activity} animating size='large' color='black' />
         </View>
       )
@@ -128,26 +129,26 @@ export default class App extends Component {
     }
   }
 
-serachRequest = (text) => {
-  console.warn('on change called',text)
-  if(text) {
-    this.setState({
-      dataSource:[],
-      isOnNextCall:false,
-      isSerachRequest:true,
-    })
-    this.pageination(this.state.serachURL+text)
-  } else{
-    this.setState({
-      dataSource:[],
-      isSerachRequest:false,
-      pageNumber:0,
-      isOnNextCall:false,
-    })
-    this.pageination(this.state.initialURL)
-  }
+  serachRequest = (text) => {
+    console.warn('on change called', text)
+    if (text) {
+      this.setState({
+        dataSource: [],
+        isOnNextCall: false,
+        isSerachRequest: true,
+      })
+      this.pageination(this.state.serachURL + text)
+    } else {
+      this.setState({
+        dataSource: [],
+        isSerachRequest: false,
+        pageNumber: 0,
+        isOnNextCall: false,
+      })
+      this.pageination(this.state.initialURL)
+    }
 
-}
+  }
 
   render() {
     // console.warn('count'+this.state.dataSource.length+','+this.state.nextUrl)
@@ -164,13 +165,13 @@ serachRequest = (text) => {
     return (
       <SafeAreaView style={style.safe}>
         <Header>
-          <SearchBar serachRequester={this.serachRequest}/>
+          <SearchBar serachRequester={this.serachRequest} />
         </Header>
-        
+
         <FlatList
           data={this.state.dataSource}
           renderItem={this.renderItem}
-          onEndReached={() => this.state.nextUrl !== null? this.pageination(this.state.nextUrl):null}
+          onEndReached={() => this.state.nextUrl !== null ? this.pageination(this.state.nextUrl) : null}
           onEndReachedThreshold={0.5}
           keyExtractor={(item) => item.name + item.mass}
           refreshControl={<RefreshControl
