@@ -16,7 +16,7 @@ export default class SerachBar extends Component {
         return (
             <TextInput style={style.bar}
                 onChangeText={this.onChange}
-                placeholder='serach' />
+                placeholder='type to search' />
         )
     }
 }
