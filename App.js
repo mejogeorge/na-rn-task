@@ -38,7 +38,7 @@ export default class App extends Component {
       dataSource: [],
       nextUrl: '',
       initialURL: "https://swapi.co/api/people/?page=1",
-      serachURL: 'https://swapi.co/api/people/?search=',
+      searchURL: 'https://swapi.co/api/people/?search=',
       isSearchRequest: false,
     }
 
@@ -121,7 +121,7 @@ export default class App extends Component {
         isOnNextCall: false,
         isSearchRequest: true,
       })
-      this.fetchAndHandleManager(this.state.serachURL + text)
+      this.fetchAndHandleManager(this.state.searchURL + text)
     } else {
       this.setState({
         dataSource: [],

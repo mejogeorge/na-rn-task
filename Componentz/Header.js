@@ -5,7 +5,9 @@ export default class Header extends Component {
     render() {
         return (
             <View style={style.head}>
-                <View style={style.headerText}><Text style={style.text}>Nest Away</Text></View>
+                <View style={style.headerText}>
+                    <Text style={style.text}>Nest Away</Text>
+                </View>
                 <View style={style.child}>{this.props.children}</View>
             </View>
         );

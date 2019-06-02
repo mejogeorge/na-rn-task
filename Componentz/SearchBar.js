@@ -3,7 +3,7 @@ import { TextInput, StyleSheet } from "react-native";
 import { placeholder } from "@babel/types";
 let timer = null
 
-export default class SerachBar extends Component {
+export default class SearchBar extends Component {
 
     onChange = (text) => {
         clearTimeout(timer)
