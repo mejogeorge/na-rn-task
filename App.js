@@ -101,7 +101,7 @@ export default class App extends Component {
 
 
   renderFooterView() {
-    console.warn('footer func called')
+    // console.warn('footer func called')
     if (this.state.nextUrl) {
       return (
         <View style={[flex = 1, paddingVertical = 20, style.activity, height = 40]}>
